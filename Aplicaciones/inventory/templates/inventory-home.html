@@ -1,0 +1,50 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+    <h1>{{ titulo }}</h1>
+    {% if messages %}
+        {% for message in messages %}
+            <div style="color: {% if message.tags == 'success' %}green{% else %}red{% endif %}; font-size: 20px; margin-bottom: 10px;">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div style="margin-bottom: 10px;">
+            <button style="background-color: rgb(20, 97, 5); color: white;">PDF</button>
+            <a href="{% url 'inventario:crear_producto' %}"><button style="background-color: rgb(20, 97, 5); color: white;">Añadir</button></a>
+            <a href="{% url 'inventario:buscar_producto' %}"><button style="background-color: rgb(20, 97, 5); color: white;">Filtrar</button></a>
+            <a href="{% url 'inventario:listado_proveedores' %}"><button style="background-color: rgb(20, 97, 5); color: white;">Proveedores</button></a>
+    </div>
+    <div style="display: inline-block; margin-left: auto; margin-right: auto;">
+        <table>
+            <tr>
+                <th>Nombre</th>
+                <th>Categoria</th>
+                <th>Proveedor</th>
+                <th>Descripción</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Editar producto</th>
+            </tr>
+            {% for pet in Productos %}
+            <tr>
+                <td>{{pet.nombre}}</td>
+                <td>{{pet.categoria}}</td>
+                <td>{{pet.proveedor}}</td>
+                <td>{{pet.descripcion}}</td>
+                <td>$ {{pet.precio}}</td>
+                {% if pet.stock > 10 %}
+                    <td>{{pet.stock}}</td>
+                {% else %}
+                    <td style="font-weight: bold; color: rgb(255, 92, 92);">{{pet.stock}}</td>
+                {% endif %}
+                <td><a href="{% url 'inventario:detalle_producto' pet.id %}"><button style="background-color: rgb(20, 97, 5); color: #fff;">Editar</button></a></td>
+            </tr>
+            {% endfor %}
+        </table>
+        <p style="font-size: 30px; text-align: left;"><strong>Catidad total de productos: {{ Total }}</strong></p>
+    </div>
+
+{% endblock %}
